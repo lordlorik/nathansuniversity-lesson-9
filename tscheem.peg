@@ -1,0 +1,55 @@
+start
+    = blankOrComment* program: spacedExpression?
+        { return program; }
+
+validchar = [0-9a-zA-Z_?!+\-=@#$%^&*/.>] / ! typeExpression "<" { return "<"; }
+
+blank "blank" = [ \r\n\t]
+
+comment "comment"
+    = ";;" [^\r\n]*
+        { return ''; }
+
+blankOrComment
+    = blank
+    / comment
+    
+atom "atom"
+    = digits: [0-9]+
+        { return +digits.join(''); }
+    / chars: validchar+
+        { return chars.join(''); }
+
+quoteExpression "quote"
+    = "'" expr: spacedExpression
+        { return ['quote', expr]; }
+
+listExpression "list"
+    = '(' exprs: spacedExpression* ')'
+        { return exprs; }
+
+typeExpression "type"
+    = '<' blankOrComment* type: typeElement blankOrComment* '>'
+        { return type; }
+
+expression
+    = atom
+    / quoteExpression
+    / listExpression
+    / typeExpression
+
+baseTypeElement = "number" / "boolean" / "atom" / "list"
+
+typeElement
+    = "(" blankOrComment* left: typeElement blankOrComment* ")" blankOrComment* "->" blankOrComment* right: typeElement
+        { return { tag: 'arrow', left: left, right: right }; }
+    / left: baseTypeElement blankOrComment* "->" blankOrComment* right: typeElement
+        { return { tag: 'arrow', left: { tag: 'base', name: left }, right: right }; }
+    / "(" blankOrComment* type: typeElement blankOrComment* ")"
+        { return type; }
+    / type: baseTypeElement
+        { return { tag: 'base', name: type }; }
+
+spacedExpression =
+    blankOrComment* expr: expression blankOrComment*
+        { return expr; }

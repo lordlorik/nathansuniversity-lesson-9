@@ -1,0 +1,21 @@
+Assignment for lesson 9 of PL101 at http://www.nathansuniversity.com/.
+
+Typed Scheem interpreter (TScheem) plus tests. My flavor of TScheem has the
+following deviations from the 'standard':
+
+* the unm operator in unary minus
+* the following comparison operators are valid: = <> > < >= <=
+* there's a modulus operator %
+* boolean operators: and, or, not (no short circuit in this case, sorry)
+* supports #nil as #nil === ()
+* supports lambda and lambda-one
+* output through alert (returns the same type that receives)
+* predicates: empty? zero? list? atom? number? boolean?
+* function application syntactic sugar: (f x y z) is the same as doing (((f x) y) z)
+* types are market using angular brackets: <type>. Valid types
+  + number
+  + boolean
+  + list
+  + arrow types
+  + any (inaccessible for the user, since it's the same as untyped)
+  + unit type (also inaccessible, used internally for lambdas without parameters)
