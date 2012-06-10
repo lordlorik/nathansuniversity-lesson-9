@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>TScheem Live Demo by Lord Lorik</title>
+  <link rel="stylesheet" href="codemirror/codemirror.css">
+  <link rel="stylesheet" href="codemirror/blackboard.css">
+  <script src="http://nathansuniversity.com/js/jquery-1.7.1.min.js"></script>
+  <script src="codemirror/codemirror.js"></script>
+  <script src="codemirror/scheme.js"></script>
+  <script src="javascripts/parser.js"></script>
+  <script src="javascripts/tscheem.js"></script>
+</head>
+<body>
+
+<div style="border: 2px solid #555; border-radius: 3px">
+<textarea id="input" style="width:100%; height:300px;">
+(begin 
+	(define fact <number -> number>
+		(lambda-one n <number>
+			(if (= n 0)
+				1
+				(* n (fact (- n 1))))))
+
+	(fact 6))
+</textarea>
+</div>
+<br />
+<input id="runButton" type="button" value="Run" />
+<input id="clearButton" type="button" value="Clear" />
+<br />
+
+<div id="console" class="console" style="border:solid 1px;">
+
+</div>
+
+<script>
+	var log = function(msg) {
+		$('#console').append($('<pre />').text(msg));
+	};
+
+	var myCodeMirror = CodeMirror.fromTextArea($('#input').get(0), {
+		mode: 'scheme',
+		theme: 'blackboard',
+		lineNumbers: true
+	});
+
+	// After page load
+	$(function() {
+		var env = {};
+
+		$('#runButton').click(function() {
+			var input = myCodeMirror.getValue();
+
+			log(input);
+			try {
+				var parsed = tscheemParser.parse(input);
+
+				log('<< PARSED ' + JSON.stringify(parsed) + ' >>');
+				try {
+					var result = tscheem.evalScheem(parsed, env);
+
+					log('> ' + JSON.stringify(result));
+				}
+				catch (e) {
+					log('> ERROR ' + e);
+				}
+			}
+			catch (e) {
+				log('> ERROR ' + e);
+			}
+		});
+		$('#clearButton').click(function() {
+			$('#console').html('');
+			log('WELCOME!');
+			env = {};
+		}).click();
+	});
+</script>
+</body>
+</html>
