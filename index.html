@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="TScheem Interpreter : " />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>TScheem Interpreter</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/lordlorik/nathansuniversity-lesson-9">View on GitHub</a>
+
+          <h1 id="project_title">TScheem Interpreter</h1>
+          <h2 id="project_tagline"></h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/lordlorik/nathansuniversity-lesson-9/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/lordlorik/nathansuniversity-lesson-9/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p>Assignment for lesson 9 of PL101 at <a href="http://www.nathansuniversity.com/">http://www.nathansuniversity.com/</a>.</p>
+
+<p>Typed Scheem interpreter (TScheem) plus tests. My flavor of TScheem has the
+following deviations from the 'standard':</p>
+
+<ul>
+<li>the unm operator in unary minus</li>
+<li>the following comparison operators are valid: = &lt;&gt; &gt; &lt; &gt;= &lt;=</li>
+<li>there's a modulus operator %</li>
+<li>boolean operators: and, or, not (no short circuit in this case, sorry)</li>
+<li>supports #nil as #nil === ()</li>
+<li>supports lambda and lambda-one</li>
+<li>output through alert (returns the same type that receives)</li>
+<li>predicates: empty? zero? list? atom? number? boolean?</li>
+<li>function application syntactic sugar: (f x y z) is the same as doing (((f x) y) z)</li>
+<li>types are market using angular brackets: . Valid types
+
+<ul>
+<li>number</li>
+<li>boolean</li>
+<li>list</li>
+<li>arrow types</li>
+<li>any (inaccessible for the user, since it's the same as untyped)</li>
+<li>unit type (also inaccessible, used internally for lambdas without parameters)</li>
+</ul>
+</li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">TScheem Interpreter maintained by <a href="https://github.com/lordlorik">lordlorik</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
