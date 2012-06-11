@@ -22,50 +22,50 @@ tscheem = (function () {
 
     var evalScheem = function (expr, env) {
         var outerEnv = { bindings: builtinFunctions, outer: null };
-		var hasOwnProperty = Object.prototype.hasOwnProperty;
-		var tEnv = { bindings: { }, outer: outerEnv };
-		var eEnv = { bindings: { }, outer: outerEnv };
+        var hasOwnProperty = Object.prototype.hasOwnProperty;
+        var tEnv = { bindings: { }, outer: outerEnv };
+        var eEnv = { bindings: { }, outer: outerEnv };
 
-		// Add type information
-		if (env && env.bindings) {
-			if (env.outer) throw('Only single level environments allowed');
+        // Add type information
+        if (env && env.bindings) {
+            if (env.outer) throw('Only single level environments allowed');
 
-			var bindings = env.bindings;
-			var tBindings = tEnv.bindings;
-			var eBindings = eEnv.bindings;
-			
-			for (var k in bindings) {
-				if (hasOwnProperty.call(bindings, k)) {
-					var v = bindings[k];
-					var t = typeExpr(v, null);
-					
-					tBindings[k] = { v: v, t: t };
-					eBindings[k] = { v: v, t: t };
-				}
-			}
-		}
-		
-		if (!typeExpr(expr, tEnv)) throw ('Type mismatch');
+            var bindings = env.bindings;
+            var tBindings = tEnv.bindings;
+            var eBindings = eEnv.bindings;
+            
+            for (var k in bindings) {
+                if (hasOwnProperty.call(bindings, k)) {
+                    var v = bindings[k];
+                    var t = typeExpr(v, null);
+                    
+                    tBindings[k] = { v: v, t: t };
+                    eBindings[k] = { v: v, t: t };
+                }
+            }
+        }
+        
+        if (!typeExpr(expr, tEnv)) throw ('Type mismatch');
 
         var ret = _evalScheem(expr, eEnv);
 
-		if (typeof ret === 'function') throw('Incomplete function evaluation');
-		
-		// Remove type information
-		if (env && env.bindings) {
-			var newBindings = { };
-			
-			bindings = eEnv.bindings;
-			
-			for (var k in bindings) {
-				if (hasOwnProperty.call(bindings, k)) {
-					newBindings[k] = bindings[k].v;
-				}
-			}
-			env.bindings = newBindings;
-		};
-		
-		return ret;
+        if (typeof ret === 'function') throw('Incomplete function evaluation');
+        
+        // Remove type information
+        if (env && env.bindings) {
+            var newBindings = { };
+            
+            bindings = eEnv.bindings;
+            
+            for (var k in bindings) {
+                if (hasOwnProperty.call(bindings, k)) {
+                    newBindings[k] = bindings[k].v;
+                }
+            }
+            env.bindings = newBindings;
+        };
+        
+        return ret;
     };
 
     var arraySlice = (function (/* array, from, to */) {
@@ -88,10 +88,10 @@ tscheem = (function () {
         return obj && (obj === '#t' || obj === '#f');
     };
 
-	var isAtom = function (obj) {
-		return obj && typeof obj === 'string' && !isBool(obj) && obj !== '#nil' && parseInt(obj) !== +obj;
-	};
-	
+    var isAtom = function (obj) {
+        return obj && typeof obj === 'string' && !isBool(obj) && obj !== '#nil' && parseInt(obj) !== +obj;
+    };
+    
     var checkNumber = function (obj) {
         if (typeof obj !== 'number') throw('Invalid number: ' + obj);
         return obj;
@@ -192,12 +192,12 @@ tscheem = (function () {
 
         var typeExprBegin = function (expr, env) {
             var type = unitType;
-			var len = expr.length;
+            var len = expr.length;
 
-			for (var i = 1; i < len; ++i) {
-				type = typeExpr(expr[i], env);
-			}
-			return type;
+            for (var i = 1; i < len; ++i) {
+                type = typeExpr(expr[i], env);
+            }
+            return type;
         };
 
         var typeExprQuote = function (expr, env) {
@@ -272,7 +272,7 @@ tscheem = (function () {
             var type = arrow(unitType, dummyType);
             var branch = type;
 
-			if (len & 1) throw('Invalid arguments for lambda');
+            if (len & 1) throw('Invalid arguments for lambda');
             for (var i = 0; i < len; i += 2) {
                 var argName = checkAtom(args[i]);
                 var argType = checkTypeExpr(args[i + 1]);
@@ -292,24 +292,24 @@ tscheem = (function () {
         var typeExprApply = function (expr, env) {
             var f = expr[0];
             var tf = typeExpr(f, env);
-			var args = expr.slice(1);
-			var len = args.length;
-			var tl, tr;
-			
-			if (!len && tf.left === unitType) {
-				if (tf.tag !== 'arrow') throw('Not an arrow type');
-				tr = tf.right;
-			}
-			for (var i = 0; i < len; ++i) {
-				if (tf.tag !== 'arrow') throw('Not an arrow type');
-				tl = tf.left;
-				tr = tf.right;
+            var args = expr.slice(1);
+            var len = args.length;
+            var tl, tr;
+            
+            if (!len && tf.left === unitType) {
+                if (tf.tag !== 'arrow') throw('Not an arrow type');
+                tr = tf.right;
+            }
+            for (var i = 0; i < len; ++i) {
+                if (tf.tag !== 'arrow') throw('Not an arrow type');
+                tl = tf.left;
+                tr = tf.right;
 
-				var ta = typeExpr(args[i], env);
-				
-				if (!(sameType(tl, ta, env))) throw('Argument type mismatch');
-				tf = tr;
-			}
+                var ta = typeExpr(args[i], env);
+                
+                if (!(sameType(tl, ta, env))) throw('Argument type mismatch');
+                tf = tr;
+            }
             return tr;
         };
 
@@ -484,15 +484,15 @@ tscheem = (function () {
 
             case 'lambda':
                 if (len != 3) throw('Malformed lambda expression');
-				
-				if ((tmp = checkList(expr[1])) === '#nil') tmp = [];
-				tmp2 = tmp.length;
+                
+                if ((tmp = checkList(expr[1])) === '#nil') tmp = [];
+                tmp2 = tmp.length;
                 if (tmp2 & 1) throw('Invalid arguments for lambda');
-				for (i = 0; i < tmp2; i += 2) {
-					checkAtom(tmp[i]);
-					checkTypeExpr(tmp[i + 1]);
-				}
-				
+                for (i = 0; i < tmp2; i += 2) {
+                    checkAtom(tmp[i]);
+                    checkTypeExpr(tmp[i + 1]);
+                }
+                
                 if (tmp2) {
                     i = 0;
                     tmp2 -= 2;
@@ -509,17 +509,17 @@ tscheem = (function () {
 
             default:
                 tmp = _evalScheem(expr[0], env);
-				if (len === 1) {
-					if (typeof tmp !== 'function') throw('Invalid expression');
-					if (sameType(typeExpr(expr, env), unitType)) throw('Incomplete function application');
-					tmp = tmp();
-				}
-				else {
-					for (i = 1; i < len; ++i) {
-						if (typeof tmp !== 'function') throw('Invalid expression');
-						tmp = tmp(_evalScheem(expr[i], env));
-					}
-				}
+                if (len === 1) {
+                    if (typeof tmp !== 'function') throw('Invalid expression');
+                    if (sameType(typeExpr(expr, env), unitType)) throw('Incomplete function application');
+                    tmp = tmp();
+                }
+                else {
+                    for (i = 1; i < len; ++i) {
+                        if (typeof tmp !== 'function') throw('Invalid expression');
+                        tmp = tmp(_evalScheem(expr[i], env));
+                    }
+                }
                 return tmp;
         }
     };

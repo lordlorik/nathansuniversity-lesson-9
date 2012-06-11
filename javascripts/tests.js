@@ -1056,8 +1056,8 @@ suite('parse', function () {
         assert.deepEqual(
             parseScheem('<(number -> boolean) -> (list -> atom)>'),
             { tag: 'arrow',
-			  left: { tag: 'arrow', left: { tag: 'base', name: 'number' }, right: { tag: 'base', name: 'boolean' } },
-			  right: { tag: 'arrow', left: { tag: 'base', name: 'list' }, right: { tag: 'base', name: 'atom' } } }
+              left: { tag: 'arrow', left: { tag: 'base', name: 'number' }, right: { tag: 'base', name: 'boolean' } },
+              right: { tag: 'arrow', left: { tag: 'base', name: 'list' }, right: { tag: 'base', name: 'atom' } } }
         );
     });
     test('whitespace', function () {
@@ -1097,9 +1097,9 @@ suite('evaluation', function () {
         assert.deepEqual(
             evalScheemString(
             '(begin ' +
-			'(define fact <number -> number> ' +
-			'(lambda-one n <number> (if (= n 0) 1 (* n (fact (- n 1)))))) ' +
-			'(fact 5))'),
+            '(define fact <number -> number> ' +
+            '(lambda-one n <number> (if (= n 0) 1 (* n (fact (- n 1)))))) ' +
+            '(fact 5))'),
             120
         );
     });
